@@ -1,18 +1,18 @@
-apply plugin: 'base'
-apply plugin: 'release'
+plugins {
+    id 'base'
+    id 'net.researchgate.release' version '2.6.0'
+}
 
-buildscript {
-    dependencies {
-        classpath 'com.github.townsfolk:gradle-release:1.2'
+// https://github.com/researchgate/gradle-release
+release {
+    tagTemplate = '$name-$version'
+
+    git {
+        requireBranch = ''
     }
 }
 
-// https://github.com/townsfolk/gradle-release
-release {
-    tagPrefix = project.name
-}
-
-createReleaseTag.dependsOn uploadArchives
+afterReleaseBuild.dependsOn uploadArchives
 
 def envs = ['bcslab', 'bcsprod', 'lab', 'prod']
 
