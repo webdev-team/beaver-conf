@@ -16,10 +16,6 @@ afterReleaseBuild.dependsOn uploadArchives
 
 def envs = ['bcslab', 'bcsprod', 'lab', 'prod']
 
-task build() {
-
-}
-
 envs.each { env ->
     def tar = task "build$env"(type: Tar) {
         compression = Compression.GZIP
@@ -31,7 +27,6 @@ envs.each { env ->
 
     build.dependsOn tar
 }
-
 
 artifacts {
     envs.each {
