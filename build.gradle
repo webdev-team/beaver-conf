@@ -12,7 +12,14 @@ release {
     }
 }
 
+task printVersion {
+    doLast {
+        println "Released version " + project.property('version')
+    }
+}
+
 afterReleaseBuild.dependsOn uploadArchives
+afterReleaseBuild.dependsOn printVersion
 
 def envs = ['bcslab', 'bcsprod', 'lab', 'prod']
 

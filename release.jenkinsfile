@@ -1,0 +1,15 @@
+#!groovy​
+
+node {
+    properties([
+            disableConcurrentBuilds()
+    ])
+
+    stage('checkout') {
+        checkout scm
+    }
+
+    stage('release') {
+        sh "./gradlew -Prelease.useAutomaticVersion=true release"
+    }
+}

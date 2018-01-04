@@ -1,0 +1,31 @@
+#!groovy​
+
+node {
+    properties([
+            disableConcurrentBuilds()
+    ])
+
+    def changelogContains = { text ->
+        currentBuild.changeSets.find {
+            it.items.find {
+                it.msg.contains(text)
+            }
+        } as Boolean
+    }
+
+
+    stage('checkout') {
+        checkout scm
+    }
+
+    stage('build') {
+        sh "./gradlew clean uploadArchives"
+    }
+
+    if (changelogContains('#deploy')) {
+        stage('deploy on lab') {
+            // will need RD_URL (rundeck url) and RD_TOKEN (api token) env variables
+            sh 'rd run --id fcdc6b84-c8be-47f6-99bc-89ed8ff56eb5'
+        }
+    }
+}
